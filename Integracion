@@ -1,0 +1,87 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+//Variable que refleja el valor real la integral evaluada.
+double real = 1.640533;
+
+//Método que evalúa la función en un valor de x.
+double funcion(double x) {
+	//return 0.2 + 25 * x - 200 * pow(x, 2) + 675 * pow(x, 3) - 900 * pow(x, 4) + 400 * pow(x, 5);
+	return sin(x);
+}
+
+//Método que obtiene el error con base en el valor real.
+double error(double res) {
+	return abs((real - res) / real) * 100;
+}
+
+//Sumas de Riemann por la derecha.
+void RiemannDerecha(double a, double b, int n) {
+
+	//Calcula el área, inicializa la variable de la respuesta.
+	double h = (b - a) / n;
+	double res = 0.0;
+	
+	//Empieza a sumar desde la esquina derecha del primer rectángulo.
+	for (double i = a + h; i <= b; i+=h) {
+		res += funcion(i)*h;
+	}
+
+	//Despliega resultados.
+	cout << "Area aproximada: " << res << endl;
+	cout << "Error: " << error(res) << endl;
+}
+
+void RiemannIzquierda(double a, double b, int n) {
+
+	//Calcula el área, inicializa la variable de la respuesta.
+	double h = (b - a) / n;
+	double res = 0.0;
+
+	//Empieza a sumar desde la esquina izquierda del primer rectángulo.
+	for (double i = a; i + h <= b; i += h) {
+		res += funcion(i)*h;
+	}
+
+	//Despliega resultados.
+	cout << "Area aproximada: " << res << endl;
+	cout << "Error: " << error(res) << endl;
+
+}
+
+void Trapecio(double a, double b, int n) { 
+	
+	//Calcula el área, inicializa la variable de la respuesta.
+	double h = (b - a) / n;
+	double res = 0;
+	
+	//Suma la primer área.
+	res += funcion(a);
+
+	//Sumas las áreas entre el segundo intervalo y el
+	//penúltimo.
+	for (double i = a + h; i < b; i += h) {
+		res += 2 * funcion(i);
+	}
+
+	//Suma la última área y realiza la división.
+	res += funcion(b);
+	res = res* (h / 2);
+
+	//Despliega los resultados.
+	cout << "Area aproximada: " << res << endl;
+	cout << "Error: " << error(res) << endl;
+
+}
+
+int main() {
+
+	//Los tres método se aplican de 0 a 0.8.
+	RiemannDerecha(0, 3.1416/2, 100);
+	RiemannIzquierda(0, 3.1416/2, 100);
+	Trapecio(0, 3.1416/2, 100);
+
+	return 0;
+}
